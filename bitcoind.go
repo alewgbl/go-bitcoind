@@ -1,4 +1,4 @@
-// Package Bitcoind is client librari for bitcoind JSON RPC API
+// Package bitcoind is client librari for bitcoind JSON RPC API
 package bitcoind
 
 import (
@@ -10,7 +10,7 @@ import (
 const (
 	// VERSION represents bicoind package version
 	VERSION = 0.1
-	// DEFAULT_RPCCLIENT_TIMEOUT represent http timeout for rcp client
+	// RPCCLIENT_TIMEOUT represent http timeout for rcp client
 	RPCCLIENT_TIMEOUT = 30
 )
 
@@ -91,8 +91,8 @@ func (b *Bitcoind) GetAddressesByAccount(account string) (addresses []string, er
 }
 
 // GetBalance return the balance of the server or of a specific account
-//If [account] is "", returns the server's total available balance.
-//If [account] is specified, returns the balance in the account
+// If [account] is "", returns the server's total available balance.
+// If [account] is specified, returns the balance in the account
 func (b *Bitcoind) GetBalance(account string, minconf uint64) (balance float64, err error) {
 	r, err := b.client.call("getbalance", []interface{}{account, minconf})
 	if err = handleError(err, &r); err != nil {
@@ -116,8 +116,8 @@ type BlockHeader struct {
 	Difficulty        float64
 	Chainwork         string
 	Txes              int    `json:"nTx"`
-	Previousblockhash string `json:"omitempty"`
-	Nextblockhash     string `json:"omitempty"`
+	Previousblockhash string `json:",omitempty"`
+	Nextblockhash     string `json:",omitempty"`
 }
 
 func (b *Bitcoind) GetBlockheader(blockHash string) (*BlockHeader, error) {
@@ -699,7 +699,7 @@ func (b *Bitcoind) SendManyReplaceable(fromAccount string, amounts map[string]fl
 
 	var r rpcResponse
 
-	if replaceable != nil {
+	if replaceable == nil {
 		r, err = b.client.call("sendmany", []interface{}{fromAccount, amounts, minconf, comment, feefrom})
 	} else {
 		r, err = b.client.call("sendmany", []interface{}{fromAccount, amounts, minconf, comment, feefrom, *replaceable})

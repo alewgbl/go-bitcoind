@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/toorop/go-bitcoind"
 	"log"
+
+	"github.com/alewgbl/go-bitcoind"
 )
 
 const (
@@ -21,7 +22,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//walletpassphrase
+	// walletpassphrase
 	err = bc.WalletPassphrase(WALLET_PASSPHRASE, 3600)
 	log.Println(err)
 
@@ -49,7 +50,7 @@ func main() {
 		log.Println(err, account)
 	*/
 
-	//getaccountaddress
+	// getaccountaddress
 	/*
 		address, err := bc.GetAccountAddress("tests")
 		log.Println(err, address)
